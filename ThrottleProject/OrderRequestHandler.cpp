@@ -97,9 +97,14 @@ bool OrderRequestHandler::processMessage(Order& request) {
 		}
 		else {
 			// Still pending orders in queue but all throttle utilized
-			if (m_qOrderBuffer.size() < m_lCapacity) {
-				m_qOrderBuffer.emplace(request);
-				return true;
+			if ((m_qOrderBuffer.size() + m_priorityQueue.size()) < m_lCapacity) {
+				if (request.orderType_ == pullOrd) {
+					m_priorityQueue.emplace(request);
+					return true;
+				}else {// Amend or New
+					m_qOrderBuffer.emplace(request);
+					return true;
+				}
 			}
 		}
 	}
