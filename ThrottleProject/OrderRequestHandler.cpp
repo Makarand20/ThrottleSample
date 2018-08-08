@@ -91,6 +91,7 @@ bool OrderRequestHandler::processMessage(Order& request) {
 				}
 				else {
 					// Exceeded capacity...
+					m_bIsProcessingAllowed = false;
 					return false;
 				}
 			}
